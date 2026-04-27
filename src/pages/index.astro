@@ -1,0 +1,98 @@
+---
+const API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
+const ZONE_ID = process.env.CLOUDFLARE_ZONE_ID;
+const DOMAIN = "willrowe.net";
+
+const siteMeta: Record<string, { icon: string; desc: string }> = {
+  recipes: { icon: 'utensils', desc: 'WIP food blog' },
+  cv: { icon: 'file-user', desc: 'Professional portfolio & experience' },
+  music: { icon: 'music', desc: 'Neural Fretwork' },
+  default: { icon: 'external-link', desc: 'View Project' },
+};
+
+interface DnsRecord { name: string }
+interface Subdomain { name: string; fullUrl: string; displayUrl: string }
+
+let subdomains: Subdomain[] = [];
+
+if (API_TOKEN && ZONE_ID) {
+  try {
+    const res = await fetch(
+      `https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?type=CNAME&per_page=100`,
+      { headers: { Authorization: `Bearer ${API_TOKEN}` } },
+    );
+    const data: { success: boolean; result: DnsRecord[] } = await res.json();
+
+    if (data.success) {
+      subdomains = data.result
+        .filter(r =>
+          r.name.endsWith(`.${DOMAIN}`) &&
+          !r.name.startsWith('_') &&
+          !r.name.startsWith('www.') &&
+          r.name !== DOMAIN,
+        )
+        .map(r => ({
+          name: r.name.split('.')[0],
+          fullUrl: `https://${r.name}`,
+          displayUrl: r.name,
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
+  } catch (err) {
+    console.error('Error fetching DNS records:', err);
+  }
+}
+
+const buildTime = new Date().toUTCString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Will Rowe // Index</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>WILL ROWE <span>// Index</span></h1>
+        <p class="subtitle">Automated directory of projects and subdomains.</p>
+      </header>
+
+      <main class="grid">
+        {subdomains.map(sub => {
+          const info = siteMeta[sub.name] ?? siteMeta.default;
+          return (
+            <a href={sub.fullUrl} class="card">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-wrapper">
+                    <i data-lucide={info.icon}></i>
+                  </div>
+                  <div class="status-dot"></div>
+                </div>
+                <div class="card-body">
+                  <h2>{sub.name.toUpperCase()}</h2>
+                  <p>{info.desc}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="url">{sub.displayUrl}</span>
+                  <i data-lucide="arrow-up-right" class="arrow-icon"></i>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </main>
+
+      <footer>
+        <p>Last updated: {buildTime} | Rebuilds nightly via Cloudflare Cron</p>
+      </footer>
+    </div>
+
+    <script is:inline>lucide.createIcons();</script>
+  </body>
+</html>

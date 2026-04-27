@@ -1,0 +1,231 @@
+:root {
+    --bg-color: #030712;
+    --card-bg: rgba(17, 25, 40, 0.78);
+    --card-border: rgba(148, 163, 184, 0.25);
+    --accent: #60a5fa;
+    --accent-strong: #38bdf8;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+    --title: #e2e8f0;
+    --ring: rgba(56, 189, 248, 0.55);
+    --ok: #10b981;
+    --shadow-card: 0 16px 36px rgba(2, 6, 23, 0.5);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+body {
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(900px 500px at 0% 0%, rgba(56, 189, 248, 0.16), transparent 60%),
+        radial-gradient(700px 420px at 100% 100%, rgba(139, 92, 246, 0.14), transparent 62%),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.5), rgba(3, 7, 18, 0.95));
+    color: var(--text-main);
+    font-family: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1rem 2rem;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.15;
+    color: var(--title);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+h1 span {
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 0.4rem;
+}
+
+.card {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 16px;
+    outline: none;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+.card-inner {
+    background: var(--card-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Effects */
+.card:hover {
+    transform: translateY(-7px);
+}
+
+.card:hover .card-inner {
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 20px 44px rgba(2, 6, 23, 0.62), 0 0 20px rgba(56, 189, 248, 0.16);
+}
+
+.card:focus-visible {
+    box-shadow: 0 0 0 4px var(--ring);
+}
+
+/* Card Header & Icon */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.icon-wrapper {
+    background: linear-gradient(145deg, rgba(96, 165, 250, 0.2), rgba(56, 189, 248, 0.08));
+    padding: 10px;
+    border-radius: 12px;
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.15);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--ok);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--ok);
+}
+
+/* Typography */
+.card-body h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.08rem;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--title);
+}
+
+.card-body p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+/* Footer & URL */
+.card-footer {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--card-border);
+    padding-top: 1rem;
+}
+
+.url {
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-strong);
+    max-width: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.arrow-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    transform: translate(-5px, 5px);
+    transition: all 0.3s ease;
+}
+
+.card:hover .arrow-icon {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+footer {
+    margin-top: 1.15rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--card-border);
+    position: relative;
+    z-index: 3;
+}
+
+footer p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.77rem;
+    letter-spacing: 0.02em;
+}
+
+@media (max-width: 760px) {
+    body {
+        padding: 2rem 0.75rem 1.25rem;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card-inner {
+        padding: 1.1rem;
+    }
+
+    .card-footer {
+        margin-top: 1.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card-inner,
+    .arrow-icon {
+        transition: none;
+    }
+
+    .card:hover {
+        transform: none;
+    }
+}
