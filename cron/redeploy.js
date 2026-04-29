@@ -1,4 +1,8 @@
 export default {
+  async fetch() {
+    return new Response('Cron worker is running. Trigger /__scheduled for test runs.');
+  },
+
   async scheduled(event, env, ctx) {
     const hookUrl = env.PAGES_DEPLOY_HOOK_URL;
 
