@@ -4,6 +4,12 @@
   "assets": {
     "directory": "./dist"
   },
+"observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  },
   "triggers": {
     "crons": ["0 0 * * *"]
   }
