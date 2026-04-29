@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "astro": "^5.18.1",
-    "lucide": "^0.372.0"
+    "lucide": "^0.372.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "wrangler": "^4.86.0"
