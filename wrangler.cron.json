@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "worker-index-nightly-redeploy",
+  "name": "site-index-nightly-redeploy",
   "main": "cron/redeploy.js",
   "compatibility_date": "2025-04-27",
   "triggers": {

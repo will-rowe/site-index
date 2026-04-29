@@ -10,7 +10,7 @@ export default {
     const res = await fetch(hookUrl, {
       method: 'POST',
       headers: {
-        'user-agent': 'worker-index-nightly-redeploy/1.0',
+        'user-agent': 'site-index-nightly-redeploy/1.0',
       },
     });
 
