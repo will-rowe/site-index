@@ -8,7 +8,7 @@ const siteMeta: Record<string, { icon: string; desc: string }> = {
   recipes: { icon: 'utensils', desc: 'A collection of my favorite kitchen experiments.' },
   cv: { icon: 'file-user', desc: 'Professional portfolio & career history.' },
   music: { icon: 'music', desc: 'Neural Fretwork & experimental audio.' },
-  gunslinger: { icon: 'dumbbell', desc: 'A 5x5 workout app.' },
+  "gun-slinger": { icon: 'dumbbell', desc: 'A 5x5 workout app.' },
   default: { icon: 'external-link', desc: 'View Project' },
 };
 
@@ -21,7 +21,7 @@ let errorMsg = null;
 if (API_TOKEN && ZONE_ID) {
   try {
     const res = await fetch(
-      `https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?type=CNAME&per_page=100`,
+      `https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/dns_records?per_page=100`,
       { 
         headers: { 
           'Authorization': `Bearer ${API_TOKEN}`,
@@ -39,6 +39,7 @@ if (API_TOKEN && ZONE_ID) {
         .filter(r =>
           r.name.endsWith(`.${DOMAIN}`) &&
           !r.name.startsWith('_') &&
+          !r.name.includes('*') && // Exclude wildcard entries like *._domainkey
           !r.name.startsWith('www.') &&
           r.name !== DOMAIN,
         )
